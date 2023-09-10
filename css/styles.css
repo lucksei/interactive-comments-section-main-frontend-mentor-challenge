@@ -1,0 +1,297 @@
+/* CSS reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+/* Boilerplate Style */
+
+.attribution {
+  font-size: 11px;
+  text-align: center;
+}
+.attribution a {
+  color: hsl(228, 45%, 44%);
+}
+
+html {
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+  background-color: hsl(0, 0%, 100%);
+}
+
+/* Global properties */
+
+html * {
+  font-family: "Rubik", sans-serif;
+  font-weight: 400;
+}
+button:hover {
+  cursor: pointer;
+}
+
+/* Comment styles */
+
+.comment-section {
+  width: auto;
+  max-width: 900px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 30px;
+  background-color: hsl(228, 33%, 97%);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.comment {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.comment,
+.add-comment-section {
+  padding: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 15px;
+  background-color: hsl(0, 0%, 100%);
+  border: none;
+  border-radius: 10px;
+  box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.05);
+}
+
+.comment .user {
+  display: flex;
+  align-items: center;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.comment .user img {
+  width: 40px;
+}
+
+.comment .user .username {
+  font-weight: 500;
+  margin-left: 15px;
+  color: hsl(212, 24%, 26%);
+}
+
+.comment .user .you-sign {
+  font-weight: 500;
+  font-size: 0.8rem;
+  padding: 3px;
+  padding-left: 7px;
+  padding-right: 7px;
+  border-radius: 5px;
+  margin-left: 5px;
+  color: #ffffff;
+  background-color: hsl(228, 45%, 44%);
+}
+
+.comment .user .date {
+  color: hsl(211, 10%, 45%);
+  margin-left: 15px;
+}
+
+.comment .text {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  margin-top: 20px;
+  margin-bottom: 25px;
+  color: hsl(211, 10%, 45%);
+}
+
+.comment .text .mention {
+  color: hsl(228, 45%, 44%);
+  font-weight: 500;
+}
+
+.comment .vote-box {
+  display: flex;
+  align-items: center;
+  justify-self: left;
+}
+
+.comment .vote-box button {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+}
+
+.comment .vote-box img {
+  width: 16px;
+  margin: 5px;
+}
+
+.comment .button-bar {
+  display: flex;
+}
+.comment .button-bar,
+.comment .vote-box {
+  width: fit-content;
+  align-self: center;
+  height: 35px;
+  padding: 5px;
+  background-color: hsl(228, 33%, 97%);
+  border: none;
+  border-radius: 10px;
+}
+
+.comment .button-bar button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-self: right;
+  border: none;
+  background: none;
+}
+
+.comment .button-bar button p,
+.comment .vote-box p {
+  margin: 5px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: hsl(228, 45%, 44%);
+}
+
+.comment .button-bar .delete-btn p {
+  color: hsl(357, 100%, 86%);
+}
+
+.comment .reply-btn p {
+  margin-left: 10px;
+}
+
+/* Reply section */
+
+.reply-section {
+  padding-left: 15px;
+  padding-bottom: 3px;
+  border-left: 3px solid hsl(239, 57%, 85%);
+  border-radius: 5px;
+  background-color: hsl(223, 19%, 93%);
+}
+
+/* Add a comment section */
+
+.add-comment-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  margin-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.add-comment-section img {
+  grid-column: 1 / span 1;
+  grid-row: 2 / span 1;
+  justify-self: start;
+  width: 40px;
+}
+
+.add-comment-section button {
+  grid-column: 2 / span 1;
+  grid-row: 2 / span 1;
+  justify-self: end;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  background-color: hsl(228, 45%, 44%);
+  border: none;
+  border-radius: 10px;
+  height: fit-content;
+  width: fit-content;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.add-comment-section textarea {
+  grid-column: 1 / 3;
+  height: 100px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+  font-weight: 500;
+}
+
+/* Responsiveness */
+
+@media (min-width: 780px) {
+  .comment-section {
+    padding-left: 50px;
+  }
+  .comment {
+    display: grid;
+    grid-template-columns: 75px auto auto;
+    grid-template-rows: 75px auto;
+  }
+
+  .comment .vote-box {
+    flex-direction: column;
+    height: fit-content;
+    align-self: baseline;
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    margin-top: 20px;
+  }
+
+  .comment .vote-box * {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  .comment .user {
+    grid-column: 2 / 3;
+    grid-row: 1 / span 1;
+    margin-top: 20px;
+  }
+
+  .comment .text {
+    grid-column: 2 / -1;
+  }
+
+  .comment .button-bar {
+    grid-column: 3 / span 1;
+    grid-row: 1 / span 1;
+    justify-self: right;
+    margin-top: 20px;
+  }
+
+  .reply-section {
+    margin-left: 35px;
+    padding-left: 45px;
+  }
+
+  .add-comment-section {
+    grid-template-columns: max-content auto max-content;
+    grid-template-rows: 1fr;
+    grid-gap: 15px;
+    align-items: start;
+  }
+
+  .add-comment-section img {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .add-comment-section textarea {
+    grid-column: 2;
+    grid-row: 1;
+    resize: none;
+  }
+  .add-comment-section button {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
