@@ -1,0 +1,35 @@
+<!-- A single comment, replace later -->
+<div class="comment">
+  <div class="user">
+    <img src="{{ image }}" alt="User Profile Picture" data-id="image" />
+    <p class="username" data-id="username">{{ username }}</p>
+    <p class="you-sign" data-id="you-sign">you</p>
+    <p class="date" data-id="created-at">{{ createdAt }}</p>
+  </div>
+  <p class="text" data-id="content">
+    <span class="mention">{{ mention }}</span> {{ content }}
+  </p>
+  <div class="vote-box">
+    <button>
+      <img src="./images/icon-plus.svg" alt="Plus Icon" />
+    </button>
+    <p class="votes" data-id="score">{{ x }}</p>
+    <button>
+      <img src="./images/icon-minus.svg" alt="Minus Icon" />
+    </button>
+  </div>
+  <div class="button-bar">
+    <button class="delete-btn">
+      <img src="./images/icon-delete.svg" />
+      <p>Delete</p>
+    </button>
+    <button class="edit-btn">
+      <img src="./images/icon-edit.svg" />
+      <p>Edit</p>
+    </button>
+    <button class="reply-btn">
+      <img src="./images/icon-reply.svg" />
+      <p>Reply</p>
+    </button>
+  </div>
+</div>

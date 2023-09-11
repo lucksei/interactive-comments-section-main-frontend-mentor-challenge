@@ -20,9 +20,10 @@
   color: hsl(228, 45%, 44%);
 }
 
-html {
+body {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   font-size: 16px;
   background-color: hsl(0, 0%, 100%);
 }
@@ -40,7 +41,7 @@ button:hover {
 /* Comment styles */
 
 .comment-section {
-  width: auto;
+  width: 100%;
   max-width: 900px;
   padding-left: 15px;
   padding-right: 15px;
@@ -116,7 +117,7 @@ button:hover {
 .comment .vote-box {
   display: flex;
   align-items: center;
-  justify-self: left;
+  justify-self: start;
 }
 
 .comment .vote-box button {
@@ -132,6 +133,7 @@ button:hover {
 }
 
 .comment .button-bar {
+  justify-self: end;
   display: flex;
 }
 .comment .button-bar,
@@ -175,6 +177,7 @@ button:hover {
 .reply-section {
   padding-left: 15px;
   padding-bottom: 3px;
+  margin-bottom: 15px;
   border-left: 3px solid hsl(239, 57%, 85%);
   border-radius: 5px;
   background-color: hsl(223, 19%, 93%);
@@ -223,38 +226,41 @@ button:hover {
   margin-bottom: 20px;
   padding: 20px;
   font-weight: 500;
+  resize: none;
 }
 
 /* Responsiveness */
 
-@media (min-width: 780px) {
+@media (min-width: 800px) {
   .comment-section {
     padding-left: 50px;
   }
   .comment {
     display: grid;
     grid-template-columns: 75px auto auto;
-    grid-template-rows: 75px auto;
+    grid-template-rows: max-content auto;
+    padding-top: 40px;
   }
 
   .comment .vote-box {
     flex-direction: column;
     height: fit-content;
-    align-self: baseline;
+    width: 50px;
+    align-self: flex-start;
     grid-column: 1 / 2;
     grid-row: 1 / 3;
-    margin-top: 20px;
   }
 
   .comment .vote-box * {
     margin-top: 8px;
     margin-bottom: 8px;
+    text-wrap: nowrap;
   }
 
   .comment .user {
     grid-column: 2 / 3;
     grid-row: 1 / span 1;
-    margin-top: 20px;
+    align-self: flex-start;
   }
 
   .comment .text {
@@ -264,8 +270,7 @@ button:hover {
   .comment .button-bar {
     grid-column: 3 / span 1;
     grid-row: 1 / span 1;
-    justify-self: right;
-    margin-top: 20px;
+    align-self: flex-start;
   }
 
   .reply-section {
@@ -274,9 +279,10 @@ button:hover {
   }
 
   .add-comment-section {
-    grid-template-columns: max-content auto max-content;
+    grid-template-columns: max-content 1fr max-content;
     grid-template-rows: 1fr;
     grid-gap: 15px;
+    justify-content: center;
     align-items: start;
   }
 
@@ -288,7 +294,6 @@ button:hover {
   .add-comment-section textarea {
     grid-column: 2;
     grid-row: 1;
-    resize: none;
   }
   .add-comment-section button {
     grid-column: 3;
