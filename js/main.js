@@ -11,7 +11,7 @@ const data = await fetch("../data.json").then((response) => {
   return response.json();
 });
 
-const commentTemplate = await fetch("/templates/comment.template").then(
+const commentTemplate = await fetch("/templates/comment.html").then(
   (response) => {
     return response.text();
   }
@@ -31,17 +31,19 @@ const commentTemplate = await fetch("/templates/comment.template").then(
 // ]);
 
 const commentNode = elementFromHTML(commentTemplate);
-let commentData = data["comments"][1]["replies"][0];
+let commentData = data["comments"][1]["replies"][1];
+// let commentData = data["comments"][0];
+let currentUser = data["currentUser"];
 console.log(commentData);
-replaceComment(commentNode, commentData);
-$.commentSection.appendChild(commentNode.cloneNode(true));
-$.commentSection.appendChild(commentNode.cloneNode(true));
+buildComment(commentNode, commentData, currentUser);
+$.commentSection.appendChild(commentNode);
 
 //*
 // helper functions
 //*
 
-function replaceComment(commentNode, commentData) {
+function buildComment(commentNode, commentData, currentUser) {
+  // query selector
   const image = commentNode.querySelector('[data-id="image"]');
   const username = commentNode.querySelector('[data-id="username"]');
   const youSign = commentNode.querySelector('[data-id="you-sign"]');
@@ -49,44 +51,52 @@ function replaceComment(commentNode, commentData) {
   const content = commentNode.querySelector('[data-id="content"]');
   const score = commentNode.querySelector('[data-id="score"]');
 
+  const upvoteBtn = commentNode.querySelector('[data-id="upvote-btn"]');
+  const downvoteBtn = commentNode.querySelector('[data-id="downvote-btn"]');
+  const deleteBtn = commentNode.querySelector('[data-id="delete-btn"]');
+  const editBtn = commentNode.querySelector('[data-id="edit-btn"]');
+  const replyBtn = commentNode.querySelector('[data-id="reply-btn"]');
+
+  // change simple stuff
   image.src = commentData["user"]["image"]["webp"];
   username.innerText = commentData["user"]["username"];
   createdAt.innerText = commentData["createdAt"];
   score.innerText = commentData["score"];
 
-  const hashtag = document.createElement("span");
-  hashtag.innerText = "@" + commentData["replyingTo"];
-  hashtag.classList.add("mention");
+  // modify the text content of the comment
+  if (commentData["replyingTo"] != undefined) {
+    const hashtag = document.createElement("span");
+    hashtag.classList.add("mention");
+    hashtag.innerText = "@" + commentData["replyingTo"];
+    content.replaceChildren(hashtag);
+  }
+  content.append(" " + commentData["content"]);
 
-  content.innerText = commentData["content"];
-  content.appendChild(hashtag);
-}
-
-// fill text template with different vars whenever there is a {{ }}
-function fillTemplate(template, arrayStrings) {
-  let newString = "";
-  let arrayIndex = 0;
-  let i = 0;
-  let j = 0;
-  while (j < template.length) {
-    if (template[j] == "{" && template[j + 1] == "{") {
-      newString += template.substring(i, j); // text before
-      i = j;
-      while (template[j - 2] != "}" && template[j - 3] != "}") {
-        j++;
-      }
-      newString += arrayStrings[arrayIndex]; // text to replace
-      arrayIndex += 1;
-      console.log(i + " " + j);
-
-      i = j;
-    }
-    j++;
+  // delete/hide unused elements (for current user/other user)
+  if (commentData["user"]["username"] != currentUser["username"]) {
+    youSign.remove();
+    deleteBtn.remove();
+    editBtn.remove();
+  } else {
+    replyBtn.remove();
   }
 
-  newString += template.substring(i, template.length); // text after
-
-  return newString;
+  // add event listeners for the buttons
+  upvoteBtn.addEventListener("click", () => {
+    console.log("upvote");
+  });
+  downvoteBtn.addEventListener("click", () => {
+    console.log("downvote");
+  });
+  deleteBtn.addEventListener("click", () => {
+    console.log("delete");
+  });
+  editBtn.addEventListener("click", () => {
+    console.log("edit");
+  });
+  replyBtn.addEventListener("click", () => {
+    console.log("reply");
+  });
 }
 
 // create an HTML element from text
