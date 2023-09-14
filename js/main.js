@@ -7,7 +7,7 @@ const $ = {
 // load files
 //*
 
-const data = await fetch("../data.json").then((response) => {
+const data = await fetch("/data.json").then((response) => {
   return response.json();
 });
 
@@ -21,26 +21,32 @@ const commentTemplate = await fetch("/templates/comment.html").then(
 // main code
 //*
 
-// const comment = fillTemplate(commentTemplate, [
-//   "./images/avatars/image-amyrobson.png",
-//   "amyrobson",
-//   "1 month ago",
-//   "@elis",
-//   "Content",
-//   "12",
-// ]);
-
 const commentNode = elementFromHTML(commentTemplate);
-let commentData = data["comments"][1]["replies"][1];
-// let commentData = data["comments"][0];
-let currentUser = data["currentUser"];
-console.log(commentData);
-buildComment(commentNode, commentData, currentUser);
-$.commentSection.appendChild(commentNode);
+const currentUser = data["currentUser"];
+traverseData(data["comments"], $.commentSection);
 
 //*
 // helper functions
 //*
+
+function traverseData(comments, commentSection) {
+  comments.forEach((comment) => {
+    // create comment
+    let newCommentNode = commentNode.cloneNode(true);
+    buildComment(newCommentNode, comment, currentUser);
+    commentSection.appendChild(newCommentNode);
+
+    if (comment["replies"] != undefined && comment["replies"].length > 0) {
+      // create reply section
+      const replySection = document.createElement("div");
+      replySection.classList.add("reply-section");
+      commentSection.appendChild(replySection);
+
+      // recursiveness
+      traverseData(comment["replies"], replySection);
+    }
+  });
+}
 
 function buildComment(commentNode, commentData, currentUser) {
   // query selector
