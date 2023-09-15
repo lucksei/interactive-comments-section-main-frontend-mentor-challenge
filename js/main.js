@@ -17,12 +17,25 @@ const commentTemplate = await fetch("/templates/comment.html").then(
   }
 );
 
+const replyTemplate = await fetch("/templates/reply-comment.html").then(
+  (response) => {
+    return response.text();
+  }
+);
+
 //*
 // main code
 //*
 
-const commentNode = elementFromHTML(commentTemplate);
+const commentNodeTemplate = elementFromHTML(commentTemplate);
+const replyNodeTemplate = elementFromHTML(replyTemplate);
 const currentUser = data["currentUser"];
+
+let commentNode = buildComment(commentNodeTemplate, data.comments[0]);
+$.commentSection.appendChild(commentNode);
+let replyNode = buildReply(replyNodeTemplate, 1);
+$.commentSection.appendChild(replyNode);
+
 traverseData(data["comments"], $.commentSection);
 
 //*
@@ -32,13 +45,13 @@ traverseData(data["comments"], $.commentSection);
 function traverseData(comments, commentSection) {
   comments.forEach((comment) => {
     // create comment
-    let newCommentNode = commentNode.cloneNode(true);
-    buildComment(newCommentNode, comment, currentUser);
-    commentSection.appendChild(newCommentNode);
+    let commentNode = buildComment(commentNodeTemplate, comment);
+    commentSection.appendChild(commentNode);
 
     if (comment["replies"] != undefined && comment["replies"].length > 0) {
       // create reply section
       const replySection = document.createElement("div");
+      replySection.id = `#reply-${comment.user.username}`;
       replySection.classList.add("reply-section");
       commentSection.appendChild(replySection);
 
@@ -48,7 +61,9 @@ function traverseData(comments, commentSection) {
   });
 }
 
-function buildComment(commentNode, commentData, currentUser) {
+function buildComment(commentNodeTemplate, commentData) {
+  const commentNode = commentNodeTemplate.cloneNode(true);
+
   // query selector
   const image = commentNode.querySelector('[data-id="image"]');
   const username = commentNode.querySelector('[data-id="username"]');
@@ -64,14 +79,16 @@ function buildComment(commentNode, commentData, currentUser) {
   const replyBtn = commentNode.querySelector('[data-id="reply-btn"]');
 
   // change simple stuff
-  image.src = commentData["user"]["image"]["webp"];
-  username.innerText = commentData["user"]["username"];
-  createdAt.innerText = commentData["createdAt"];
-  score.innerText = commentData["score"];
+  commentNode.id = commentData.id;
+  image.src = commentData.user.image.webp;
+  username.innerText = commentData.user.username;
+  createdAt.innerText = commentData.createdAt;
+  score.innerText = commentData.score;
 
   // modify the text content of the comment
-  if (commentData["replyingTo"] != undefined) {
-    const hashtag = document.createElement("span");
+  if (commentData.replyingTo != undefined) {
+    const hashtag = document.createElement("a");
+    hashtag.href = "#"; // TODO go to the reply
     hashtag.classList.add("mention");
     hashtag.innerText = "@" + commentData["replyingTo"];
     content.replaceChildren(hashtag);
@@ -89,20 +106,44 @@ function buildComment(commentNode, commentData, currentUser) {
 
   // add event listeners for the buttons
   upvoteBtn.addEventListener("click", () => {
-    console.log("upvote");
+    console.log("upvote: " + commentData.id);
   });
   downvoteBtn.addEventListener("click", () => {
-    console.log("downvote");
+    console.log("downvote: " + commentData.id);
   });
   deleteBtn.addEventListener("click", () => {
-    console.log("delete");
+    console.log("delete: " + commentData.id);
   });
   editBtn.addEventListener("click", () => {
-    console.log("edit");
+    console.log("edit: " + commentData.id);
   });
   replyBtn.addEventListener("click", () => {
-    console.log("reply");
+    console.log("reply: " + commentData.id);
   });
+
+  return commentNode;
+}
+
+function buildReply(replyNodeTemplate, replyToId) {
+  const replyNode = replyNodeTemplate.cloneNode(true);
+
+  // query selectors
+  const image = replyNode.querySelector('[data-id="image"]');
+  const textArea = replyNode.querySelector('[data-id="text-area"]');
+  const sendReplyBtn = replyNode.querySelector('[data-id="send-reply-btn"]');
+
+  // change simple stuff
+  replyNode.id = `add-reply-${replyToId}`;
+  image.src = currentUser.image.webp;
+  textArea.placeholder = "Add a reply...";
+  sendReplyBtn.innerText = "REPLY";
+
+  // add event listeners
+  sendReplyBtn.addEventListener("click", () => {
+    console.log("reply something");
+  });
+
+  return replyNode;
 }
 
 // create an HTML element from text

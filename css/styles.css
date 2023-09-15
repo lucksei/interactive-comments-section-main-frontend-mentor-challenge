@@ -112,6 +112,7 @@ button:hover {
 .comment .text .mention {
   color: hsl(228, 45%, 44%);
   font-weight: 500;
+  text-decoration: none;
 }
 
 .comment .vote-box {
