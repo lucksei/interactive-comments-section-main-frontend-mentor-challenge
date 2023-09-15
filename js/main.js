@@ -36,7 +36,7 @@ $.commentSection.appendChild(commentNode);
 let replyNode = buildReply(replyNodeTemplate, 1);
 $.commentSection.appendChild(replyNode);
 
-traverseData(data["comments"], $.commentSection);
+// traverseData(data["comments"], $.commentSection);
 
 //*
 // helper functions
@@ -140,7 +140,11 @@ function buildReply(replyNodeTemplate, replyToId) {
 
   // add event listeners
   sendReplyBtn.addEventListener("click", () => {
-    console.log("reply something");
+    console.log("submit the reply");
+  });
+
+  textArea.addEventListener("submit", () => {
+    console.log("submit the reply");
   });
 
   return replyNode;
